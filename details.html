@@ -69,18 +69,18 @@
                     </li>
                     <li>
                         <code>logf_jac = None</code>
-                        <p>Function (n,) -> (n,) (n-d array to n-d array). Derivative of logf, \(\nabla f / f\).</p>
-                        <p>Supplying this improves the accuracy and speed of the optimisation algorithms, particularly in high dimensions.</p>
+                        <p>Function (n,) -> (n,) (n-dim array to n-dim array). Derivative of logf. Provide if using an optimisation algorithm that requires it.</p>
                     </li>
                     <li>
-                        <code>optim_method_mode = 'BFGS'</code>
+                        <code>optim_method_mode = 'Nelder-Mead'</code>
+                        <p>Method used to find the mode of logf.</p>
                         <p>
-                            Method used to find the mode of logf. 
+                            Methods that use the derivative, e.g. BFGS, usually perform better, if you have the derivative of logf to hand.
                             See the SciPy docs on <a target='_blank' href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html">scipy.optimize.minimize</a> for methods.
                         </p>
                     </li>
                     <li>
-                    <code>optim_method_auxiliary = 'L-BFGS-B'</code>
+                    <code>optim_method_auxiliary = 'Nelder-Mead'</code>
                         <p>
                             Method used to find the inf/sup of auxiliary functions \(x_i f^ \frac{r}{1+rd}\). See above.
                         </p>
