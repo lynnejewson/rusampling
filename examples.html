@@ -36,7 +36,7 @@
                 <pre>
 import numpy as np
 import scipy
-from ru import Ru
+from rusampling import Ru
 
 logf = scipy.stats.lognorm.logpdf
 
@@ -55,7 +55,7 @@ t.plot()</pre>
                 <pre>
 import numpy as np
 import scipy
-from ru import Ru
+from rusampling import Ru
 
 logf = scipy.stats.lognorm.logpdf
 
@@ -75,7 +75,7 @@ t.plot()</pre>
                 </p>
                 <pre>
 import scipy.stats as stats
-from ru import Ru
+from rusampling import Ru
 
 t = Ru(stats.cauchy.logpdf, r=1.26)
 t.plot_f()                              # check that the rectangle is found correctly
@@ -97,7 +97,7 @@ t.plot(bins=80, xmax=10, xmin=-10)     # plot a histogram of results</pre>
                 <pre>
 import numpy as np
 import scipy.stats
-from ru import Ru
+from rusampling import Ru
 
 def gamma_logf(params, x):                                  # Posterior distribution for gamma
     m = np.maximum(params, np.finfo(np.float64).eps)
