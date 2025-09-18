@@ -31,8 +31,17 @@ h1 {
     font-weight: 600;
 }
 img.example {
-    width: 500px;
+    width: 450px;
 }
 img.example-small {
     width: 350px;
+}
+
+@media (max-width: 767px) {
+  .menu-container {
+    float: none !important;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
 }

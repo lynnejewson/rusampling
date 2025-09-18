@@ -42,8 +42,10 @@ logf = scipy.stats.lognorm.logpdf
 
 t = Ru(logf, s=1)
 samples = t.rvs(n=100000)
-t.plot()</pre>
-                <img class='example' src="stuff/ex2.png">
+t.plot()</pre>  
+                <div class="text-center">
+                    <img class='example' src="stuff/ex2.png">
+                </div>
                 <p>
                     Or, we can use \(X=\log(x)\) to transform to a normal distribution, sample from that, and transform back. 
                     This improves the acceptance probability, so samples faster.
@@ -66,7 +68,9 @@ t = Ru(
 )
 samples = t.rvs(n=100000, undo_transformations=False)
 t.plot()</pre>
-                <img class='example' src="stuff/ex1.png">
+                <div class="text-center">
+                    <img class='example' src="stuff/ex1.png">
+                </div>
 
                 <h3>Example 2: Cauchy Distribution</h3>
                 <p>
@@ -81,8 +85,10 @@ t = Ru(stats.cauchy.logpdf, r=1.26)
 t.plot_f()                              # check that the rectangle is found correctly
 t.rvs(n=500000)
 t.plot(bins=80, xmax=10, xmin=-10)     # plot a histogram of results</pre>
-                <img class='example-small' src="stuff/ex4a.png">
-                <img class='example-small' src="stuff/ex4b.png">
+                <div class="text-center">                    
+                    <img class='example-small' src="stuff/ex4a.png">
+                    <img class='example-small' src="stuff/ex4b.png">
+                </div>
 
                 <h3>Example 3: Gamma Distribution Parameter Sampling</h3>
                 <p>
@@ -124,9 +130,13 @@ t.plot_f(                                                   # Confirm that the b
 y = t.rvs(n=10000) 
 t.plot(s=1, color='orangered')</pre>
                 <p>The output from <code>plot_f</code>, below, has crosses at the maxima and minima:</p>
-                <img class="example" src="stuff/ex3a.png">
-                <p>And the output from <code>plot</code>:</p>  
-                <img class="example" src="stuff/ex3b.png">
+                <div class="text-center">     
+                    img class="example" src="stuff/ex3a.png">
+                </div>
+                <p>And the output from <code>plot</code>:</p> 
+                <div class="text-center">      
+                    <img class="example" src="stuff/ex3b.png">
+                </div>
 
                 <h3>Example 4: Acceptance Probability drop-off</h3>
                 <p>
@@ -143,7 +153,9 @@ t.plot(s=1, color='orangered')</pre>
                     </p>
                     <a target='_blank' href="stuff/Example nD Gaussians.py">Open code in new tab.</a>
                 </p>
-                <img src="stuff/exd.png">
+                <div class="text-center">     
+                    <img class='example' src="stuff/exd.png">
+                </div>
 
             </div>
         </div>
