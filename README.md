@@ -1,2 +1,2 @@
-# rusampling.github.io
+# rusampling.com
 rusampling website
