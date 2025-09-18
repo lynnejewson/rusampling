@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+        <title>RUSampling: uses</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 d-flex justify-content-center menu-container">
+                <div class="menu">
+                    <div class="menu-inner">
+                        <img src="stuff/Gaussian2.png">
+                        <img src="stuff/Title.png">
+                        <ul>
+                            <li><a href='main.html'>Home</a></li>
+                            <li><a href='quickstart.html'>Quickstart</a></li>
+                            <li><a href='details.html'>Details</a></li>
+                            <li><a href='examples.html'>Examples</a></li>
+                            <li><a href='suitable uses.html'>Suitable  uses</a></li>
+                        </ul> 
+                    </div>  
+                </div>
+            </div>
+
+            <div class="col-lg-1"></div>
+
+            <div class="col-lg-8 col-md-9 col-sm-8 col-xs-12 main-bit">
+                <h1>Suitable uses</h1>
+                <p>
+                    Ratio-of-Uniforms is a rejection sampling method. Its speed is linear in the probability of acceptance \(p_a\). 
+                    When \(p_a\) is low, say \(p_a < 0.01\), the sampling is slow.
+                    In particular, the higher the dimension, the smaller \(p_a\) gets.
+                </p>
+                <p>
+                    Ratio-of-Uniforms does not work for all probability densities. It is required of \(f(x_1, ..., x_d) \), that
+                    <ul>
+                        <li>\(f\) is bounded</li>
+                        <li>\(x_i f(x_1, ..., x_d) ^ \frac{r}{1+rd}\) is bounded for \(i = 1..d\), where \(r\) is a tuning parameter that is by default set to 0.5.</li>
+                    </ul>
+                    Many commonly used distributions have no problems.
+                </p>
+                <p>
+                    For a more detailed discussion referring to the R package RUST, refer to 
+                    <a target='_blank' href="https://cran.r-project.org/web/packages/rust/vignettes/rust-b-when-to-use-vignette.html">When can rust be used?</a>
+                     by Paul Northrop.
+                </p>
+            </div>
+        </div>
+
+    </body>
+</html>

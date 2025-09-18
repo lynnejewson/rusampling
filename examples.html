@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+        <title>RUSampling: examples</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 d-flex justify-content-center menu-container">
+                <div class="menu">
+                    <div class="menu-inner">
+                        <img src="stuff/Gaussian2.png">
+                        <img src="stuff/Title.png">
+                        <ul>
+                            <li><a href='main.html'>Home</a></li>
+                            <li><a href='quickstart.html'>Quickstart</a></li>
+                            <li><a href='details.html'>Details</a></li>
+                            <li><a href='examples.html'>Examples</a></li>
+                            <li><a href='suitable uses.html'>Suitable uses</a></li>
+                        </ul> 
+                    </div>  
+                </div>
+            </div>
+
+            <div class="col-lg-1"></div>
+
+            <div class="col-lg-8 col-md-9 col-sm-8 col-xs-12 main-bit">
+                <h1>Examples</h1>
+                <h3>Example 1: Log-Normal</h3>
+                <p>To sample from the log-normal distribution:</p>
+                <pre>
+import numpy as np
+import scipy
+from ru import Ru
+
+logf = scipy.stats.lognorm.logpdf
+
+t = Ru(logf, s=1)
+samples = t.rvs(n=100000)
+t.plot()</pre>
+                <img class='example' src="stuff/ex2.png">
+                <p>
+                    Or, we can use \(X=\log(x)\) to transform to a normal distribution, sample from that, and transform back. 
+                    This improves the acceptance probability, so samples faster.
+                </p>
+                <p>
+                    We have to pass the inverse transform, \(x(X) = e^X\), and the log-Jacobian of this transform, which is \(X\).
+                </p>
+                <p>I have set undo_transformations=False in rvs for illustrative purposes.</p>
+                <pre>
+import numpy as np
+import scipy
+from ru import Ru
+
+logf = scipy.stats.lognorm.logpdf
+
+t = Ru(
+    logf, s=1,
+    X_to_x = lambda X: np.exp(X), 
+    X_to_x_logj = lambda X: X
+)
+samples = t.rvs(n=100000, undo_transformations=False)
+t.plot()</pre>
+                <img class='example' src="stuff/ex1.png">
+
+                <h3>Example 2: Cauchy Distribution</h3>
+                <p>
+                    The bounding box for the Cauchy distribution does not exist if r < 1. For values > 1, r=1.26 gives the optimal acceptance probability.
+                    I used the <code>plot_f</code> method to check the bounding box is in the right place.
+                </p>
+                <pre>
+import scipy.stats as stats
+from ru import Ru
+
+t = Ru(stats.cauchy.logpdf, r=1.26)
+t.plot_f()                              # check that the rectangle is found correctly
+t.rvs(n=500000)
+t.plot(bins=80, xmax=10, xmin=-10)     # plot a histogram of results</pre>
+                <img class='example-small' src="stuff/ex4a.png">
+                <img class='example-small' src="stuff/ex4b.png">
+
+                <h3>Example 3: Gamma Distribution Parameter Sampling</h3>
+                <p>
+                    Generate samples from the gamma distribution, then sample the shape and scale. 
+                    The prior is \(\frac{1}{a \sigma }\), chosen for <em>reliability</em> 
+                    (see <a target='_blank' href='https://ascmo.copernicus.org/articles/11/1/2025/'>our paper</a> on this topic).
+                </p>
+                <p>
+                    Note that in order to sample quickly, the logpdf must be vectorised in whichever variable
+                    is to be sampled. SciPy does not provide logpdfs that are vectorised in the parameters, so this is done by hand.
+                </p>
+                <pre>
+import numpy as np
+import scipy.stats
+from ru import Ru
+
+def gamma_logf(params, x):                                  # Posterior distribution for gamma
+    m = np.maximum(params, np.finfo(np.float64).eps)
+    sh, sc = m[:,0], m[:,1]                                 # shape, scale
+    x_scaled = x[:,None]/sc
+    
+    g = scipy.special.gamma(sh)                             # Computing components of the gamma logpdf
+    x_sum = np.sum(x_scaled, axis=0)
+    log_x_sum = np.sum(np.log(x_scaled), axis=0) 
+    log_pdf = -len(x)*np.log(g*sc) + (sh-1)*log_x_sum - x_sum
+    log_prior = - np.log(sh) - np.log(sc)
+    return log_pdf + log_prior
+
+
+data = scipy.stats.gamma.rvs(a=0.5, scale=5, size=200)      # Generate training data from the gamma distribution
+
+t = Ru(gamma_logf, x=data, d=2)        
+t.plot_f(                                                   # Confirm that the bounding rectangle is correct with contour plots
+    levels = 20,
+    n_points = 100, 
+    xlim=np.asarray(((-0.5, 0.5), (-1, 1), (-0.75, 0.75))), 
+    ylim=np.asarray(((-0.5, 0.5), (-1, 1), (-0.5, 0.8))),
+    )
+y = t.rvs(n=10000) 
+t.plot(s=1, color='orangered')</pre>
+                <p>The output from <code>plot_f</code>, below, has crosses at the maxima and minima:</p>
+                <img class="example" src="stuff/ex3a.png">
+                <p>And the output from <code>plot</code>:</p>  
+                <img class="example" src="stuff/ex3b.png">
+
+                <h3>Example 4: Acceptance Probability drop-off</h3>
+                <p>
+                    Wakefield, Gelfand, and Smith (1991) present a formula for acceptance probability in 
+                    <a href="https://link.springer.com/article/10.1007/BF01889987">Efficient generation of 
+                        random variates via the ratio-of-uniforms method</a>.
+                    Application to the n-dimensional Gaussian gives the expression 
+                    $$P_a = \frac{(\pi/2)^\frac d2}{(1+rd)(\frac{1+rd}{er})^\frac d2}$$
+                    I plotted this expression against d, together with the actual acceptance rate over 100,000 trials, 
+                    in order to visualise the insuitability of Ratio-of-Uniforms in high dimensions.
+                    <a target='blank' href="Example nD Gaussians.py">View the code here.</a> From checking the 
+                    exact expresions for the bounding box, it seems the mismatch
+                    between the two lines comes from inaccuracies in numerically maximising f,
+                    which could be improved with a method other than Nelder-Mead.
+                </p>
+                <img src="stuff/exd.png">
+
+            </div>
+        </div>
+
+    </body>
+</html>

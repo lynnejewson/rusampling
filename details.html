@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+        <title>RUSampling: details</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 d-flex justify-content-center menu-container">
+                <div class="menu">
+                    <div class="menu-inner">
+                        <img src="stuff/Gaussian2.png">
+                        <img src="stuff/Title.png">
+                        <ul>
+                            <li><a href='main.html'>Home</a></li>
+                            <li><a href='quickstart.html'>Quickstart</a></li>
+                            <li><a href='details.html'>Details</a></li>
+                            <li><a href='examples.html'>Examples</a></li>
+                            <li><a href='suitable uses.html'>Suitable  uses</a></li>
+                        </ul> 
+                    </div>  
+                </div>
+            </div>
+
+            <div class="col-lg-1"></div>
+
+            <div class="col-lg-8 col-md-9 col-sm-8 col-xs-12 main-bit">
+                <h1>Details</h1>
+                <p><code>t</code> refers to an instance of the <code>Ru</code> class. </p>
+
+                <h3>Init</h3>
+                <p>Parameters when initialising <code>t</code>:</p>
+                <ul>
+                    <li><code>logf</code>
+                        <p>
+                            Should accept a shape (n, d) np.array and return a shape (n,) np.array.
+                            In the d=1 case, acceps x as either (n, 1) or (n,). </p>
+                        <p>  
+                            Non-vectorised functions are also supported, i.e. (d,) -> float (or d=1: float -> float).
+                            However, if possible, vectorise your function over multiple x values using numpy broadcasting, 
+                            as this massively speeds up the sampling.
+                        </p>
+                    </li>
+                    <li><code>**logf_args</code>
+                        <p>
+                            Extra keyword arguments that logf takes.
+                        </p>
+                    </li>
+                    <li><code>d=1</code>
+                        <p>
+                            Dimension of the random variable.
+                        </p>
+                    </li>
+                    <li><code>ics = [0, .., 0]</code>
+                        <p>Initial conditions with which to find the mode of f. A d-dimensional list.</p>
+                        <p>If Ru fails, check these first; in particular, make sure they lie in a region where f is not identically zero.</p>
+                    </li>
+                    <li>
+                        <code>X_to_x = None, X_to_x_logj = None</code>
+                        <p>User-defined transformation to apply (first) to the space. (The transformation is undone before samples are returned.)</p>
+                        <p>If, say, the transformation is X(x), the inverse x(X), i.e. 'X-to-x', must be passed, as well as the log-Jacobian of this inverse.</p>
+                        <p>It is assumed that initial conditions passed have had this transformation applied, so are values of X, not x.</p>
+                    </li>
+                    <li>
+                        <code>YJ_lambda = None</code>
+                        <p>The Yeo-Johnson transformation is applied if lambda are supplied as a d-dimensional list. This may increase acceptance probability.</p>
+                    </li>
+                    <li>
+                        <code>optim_method = 'Nelder-Mead'</code>
+                        <p>
+                            Method used to find the maxima of f and other relevant functions. 
+                            See the SciPy docs on <a target='_blank' href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html">scipy.optimize.minimize</a> for methods.
+                            The method chosen must use f only, not its derivatives.</p>
+                    </li>
+                    
+                    <li><code>r = 0.5</code>
+                        <p>Tuning parameter to use in the Ratio-of-Uniforms algorithm, which affects the acceptance probability. r=0.5 is optimal in the Gaussian case.</p>
+                    </li>
+                    <li><code>rotate = True</code>
+                        <p>Reducing the correlation between the dimensions of the random variable can improve acceptance probability. Ru attempts to do this by rotating the axes. Applies when d>1.</p>
+                    </li>
+                    <li><code>rectangle = None</code>
+                        <p>
+                            The bounding rectangle for f is calculated automatically. 
+                            If you wish to calculate it separately, e.g. if the optimization method Ru uses (Nelder-Mead simplex) fails, provide a (2, d)-dimensional numpy array, where (0, :) are the minimums and (1, :) the maximums.
+                        </p>
+                    </li>
+                </ul>
+
+                <h3>Sampling</h3>
+                <p>After initialising, call:</p>
+                <ul>
+                    <li>
+                        <code>t.rvs(n=N)</code> to return a (N, d) numpy array of samples.
+                    </li>
+                    <li>
+                        <code>t.rvs_detail(n=N)</code> (instead of rvs) to return a dict with keys 'rvs' (samples), 'pa' (acceptance probability) and 'time' (elapsed during sampling). 
+                    </li>
+                    <li>
+                        <code>t.plot()</code> for d=1,2, after generating samples to plot the samples in a histogram/scatter plot against f.
+                    </li>
+                    <li><code>t.f()</code> for the transformed function which the algorithm is applied to; <code>t.f_original()</code> is the original pdf.</li>
+                    <li><code>t.info()</code> to print out the bounding rectangle.</li>
+                    <li><code>t.plot_f()</code> for d=1, 2 to confirm that the bounding rectangle has been found correctly. </li>
+                    <li>
+                        Pass <code>undo_transformations=False</code> to either rvs or rvs_detail of these to return the transformed variable.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </body>
+</html>

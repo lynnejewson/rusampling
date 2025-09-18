@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+        <title>RUSampling: quickstart</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 d-flex justify-content-center menu-container">
+                <div class="menu">
+                    <div class="menu-inner">
+                        <img src="stuff/Gaussian2.png">
+                        <img src="stuff/Title.png">
+                        <ul>
+                            <li><a href='main.html'>Home</a></li>
+                            <li><a href='quickstart.html'>Quickstart</a></li>
+                            <li><a href='details.html'>Details</a></li>
+                            <li><a href='examples.html'>Examples</a></li>
+                            <li><a href='suitable uses.html'>Suitable  uses</a></li>
+                        </ul> 
+                    </div>  
+                </div>
+            </div>
+
+            <div class="col-lg-1"></div>
+
+            <div class="col-lg-8 col-md-9 col-sm-8 col-xs-12 main-bit">
+                <h1>Quickstart</h1>
+                    <ol>
+                        <li>Call <code>from ru import Ru</code>.</li>
+                        <li>Create an instance of the <code>Ru</code> class, passing
+                            the log-pdf <code>logf</code>, the dimension <code>d</code> (default 1), and any extra arguments that the log-pdf takes.</li>
+                        <li>Call this object's <code>rvs</code> method, passing the number of samples <code>n</code> to generate.</li>
+                    </ol>
+                    <br>
+                    <p>So, if <code>f(x)</code> is a pdf in 1 dimension, take 100 samples, by passing the log-pdf <code>logf(x)</code>:</p>
+                    <pre>
+t = Ru(log_f)
+samples = t.rvs(n=100)</pre>
+                    <br>
+                    <p>An example: sampling from the gamma distribution, passing args that <code>gamma.logpdf</code> take to <code>Ru</code>:</p>
+                    <pre>
+from scipy.stats import gamma
+
+t = Ru(gamma.logpdf, a=2, loc=9)
+samples = t.rvs(n=50)</pre>
+                    <br>
+                    <p>An example: parameter sampling from the normal distribution with prior \(1/\sigma\), using some data:</p>
+                    <pre>
+from scipy.stats import norm
+import numpy as np
+
+def log_posterior(params, x):
+    mu = params[0]
+    sigma = params[1]
+    log_f = np.sum(norm.logpdf(x, loc=mu, scale=sigma)) 
+    log_prior = -np.log(sigma)
+    return log_f + log_prior
+
+x_normal = [0.95368014, -0.65628003, -0.63509242,  
+            1.34746566,  2.0896044, 0.97076896]
+
+t = Ru(log_posterior, x=x_normal, d=2)
+parameter_samples = t.rvs(n=200)</pre>
+            </div>
+        </div>
+    </body>
+</html>
