@@ -137,10 +137,11 @@ t.plot(s=1, color='orangered')</pre>
                     $$P_a = \frac{(\pi/2)^\frac d2}{(1+rd)(\frac{1+rd}{er})^\frac d2}$$
                     I plotted this expression against d, together with the actual acceptance rate over 100,000 trials, 
                     in order to visualise the insuitability of Ratio-of-Uniforms in high dimensions.
-                    <a target='blank' href="Example nD Gaussians.py">View the code here.</a> From checking the 
-                    exact expresions for the bounding box, it seems the mismatch
-                    between the two lines comes from inaccuracies in numerically maximising f,
-                    which could be improved with a method other than Nelder-Mead.
+                    <p>
+                        This example makes use of the option to provide the derivative of logf 
+                        for a more accurate bounding rectangle in higher dimensions.
+                    </p>
+                    <a target='blank' href="Example nD Gaussians.py">Open code in new tab.</a>
                 </p>
                 <img src="stuff/exd.png">
 

@@ -39,7 +39,8 @@
                     <li><code>logf</code>
                         <p>
                             Should accept a shape (n, d) np.array and return a shape (n,) np.array.
-                            In the d=1 case, acceps x as either (n, 1) or (n,). </p>
+                            In the d=1 case, acceps x as either (n, 1) or (n,). 
+                        </p>
                         <p>  
                             Non-vectorised functions are also supported, i.e. (d,) -> float (or d=1: float -> float).
                             However, if possible, vectorise your function over multiple x values using numpy broadcasting, 
@@ -47,14 +48,10 @@
                         </p>
                     </li>
                     <li><code>**logf_args</code>
-                        <p>
-                            Extra keyword arguments that logf takes.
-                        </p>
+                        <p>Extra keyword arguments that logf takes.</p>
                     </li>
                     <li><code>d=1</code>
-                        <p>
-                            Dimension of the random variable.
-                        </p>
+                        <p>Dimension of the random variable. </p>
                     </li>
                     <li><code>ics = [0, .., 0]</code>
                         <p>Initial conditions with which to find the mode of f. A d-dimensional list.</p>
@@ -71,13 +68,23 @@
                         <p>The Yeo-Johnson transformation is applied if lambda are supplied as a d-dimensional list. This may increase acceptance probability.</p>
                     </li>
                     <li>
-                        <code>optim_method = 'Nelder-Mead'</code>
-                        <p>
-                            Method used to find the maxima of f and other relevant functions. 
-                            See the SciPy docs on <a target='_blank' href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html">scipy.optimize.minimize</a> for methods.
-                            The method chosen must use f only, not its derivatives.</p>
+                        <code>logf_jac = None</code>
+                        <p>Function (n,) -> (n,) (n-d array to n-d array). Derivative of logf, (\(\nabla f / f\)).</p>
+                        <p>Supplying this improves the accuracy and speed of the optimisation algorithms, particularly in high dimensions.</p>
                     </li>
-                    
+                    <li>
+                        <code>optim_method_mode = 'BFGS'</code>
+                        <p>
+                            Method used to find the mode of logf. 
+                            See the SciPy docs on <a target='_blank' href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html">scipy.optimize.minimize</a> for methods.
+                        </p>
+                    </li>
+                    <li>
+                    <code>optim_method_auxiliary = 'L-BFGS-B'</code>
+                        <p>
+                            Method used to find the inf/sup of auxiliary functions \(x_i f^ \frac{r}{1+rd}\). See above.
+                        </p>
+                    </li>
                     <li><code>r = 0.5</code>
                         <p>Tuning parameter to use in the Ratio-of-Uniforms algorithm, which affects the acceptance probability. r=0.5 is optimal in the Gaussian case.</p>
                     </li>
@@ -87,7 +94,7 @@
                     <li><code>rectangle = None</code>
                         <p>
                             The bounding rectangle for f is calculated automatically. 
-                            If you wish to calculate it separately, e.g. if the optimization method Ru uses (Nelder-Mead simplex) fails, provide a (2, d)-dimensional numpy array, where (0, :) are the minimums and (1, :) the maximums.
+                            If you wish to calculate it separately, provide a (2, d)-dimensional numpy array, where (0, :) are the minimums and (1, :) the maximums.
                         </p>
                     </li>
                 </ul>

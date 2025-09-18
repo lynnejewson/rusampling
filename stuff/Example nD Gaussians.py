@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 def logf(x):
     return -0.5 * np.sum(x**2, axis=1)
 
+def logf_jac(x):
+    return -x
+
 def pa_exact(r, d):
     acceptance_area = (2*np.pi)**(d/2) / (1 + r*d)
     total_area = (4*(1 + r*d)/(np.e*r))**(d/2)
@@ -24,7 +27,7 @@ r = 0.5
 
 for d_i in d:
     probabilities_exact.append(pa_exact(r, d_i))
-    t = Ru(logf, d=d_i, r=r)
+    t = Ru(logf, d=d_i, r=r, logf_jac=None)
     out = t.rvs_detail(n=n)
     probabilities.append(out['pa'])
 
