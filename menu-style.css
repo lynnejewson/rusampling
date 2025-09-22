@@ -1,0 +1,34 @@
+@media (max-width: 991px) {
+  .menu-container {
+    float: none !important;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+}
+
+.menu {
+    margin-top: 100px;
+    border: 1px solid rgb(168, 168, 168);
+}
+
+.menu-inner {
+    border: 15px solid white;
+}
+
+.menu ul li::marker {
+    content: "->  ";
+}
+
+.menu img{
+    width:250px;
+    max-width: 100%;
+}
+
+.menu .icon {
+    width: 30px;
+}
+
+.menu .title {
+    margin-bottom: 5px;
+}

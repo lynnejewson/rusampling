@@ -7,16 +7,16 @@
         <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
         <title>RUSampling</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="menu-style.css">
         <link rel="icon" type="image/x-icon" href="stuff/favicon.ico">
     </head>
     <body>
         <div class="container">
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 d-flex menu-container justify-content-center">
-                <div class="menu align-middle">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 menu-container">
+                <div class="menu">
                     <div class="menu-inner">
                         <img class='logo' src="stuff/Gaussian2.png">
-                        <img src="stuff/Title.png">
-                        
+                        <img class='title' src="stuff/Title.png">
                         <ul>
                             <li><a href='index.html'>Home</a></li>
                             <li><a href='quickstart.html'>Quickstart</a></li>
@@ -24,9 +24,15 @@
                             <li><a href='examples.html'>Examples</a></li>
                             <li><a href='suitable uses.html'>Suitable  uses</a></li>
                         </ul> 
+                        <div class="icon-container text-center">
+                            <a target='_blank' href="https://github.com/lynnejewson/rusampling-py"><img class='icon' src="stuff/icon_github.webp" alt="GitHub icon"></a>
+                            <a target="_blank" href="https://pypi.org/project/rusampling"><img class='icon' src="stuff/icon_pypi.webp" alt="PyPi icon"></a>
+                            <a target="_blank" href="https://en.wikipedia.org/wiki/Ratio_of_uniforms"><img class="icon" src="stuff/wiki2.png" alt="Wikipedia icon"></a>
+                        </div>
                     </div>  
                 </div>
             </div>
+
             <div class="col-lg-1"></div>
             <div class="col-lg-8 col-md-9 col-sm-12 col-xs-12 main-bit">
                 <h1>RUSampling</h1>
@@ -38,6 +44,7 @@
                 <p>Many thanks to Paul Northrop, the author of <a href="https://paulnorthrop.github.io/rust/" target="_blank">RUST</a>, the package for Ratio-of-Uniforms sampling in R, and who helped me with the development of this project.</p>
                 <p>If you find bugs, or have any suggestions for features you would find helpful, please report on the github page or contact me at firstname . surname @ gmail.</p>
             </div>
+
         </div>
 
     </body>
