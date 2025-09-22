@@ -37,7 +37,7 @@ img.example-small {
     width: 350px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .menu-container {
     float: none !important;
     margin-left: auto;
